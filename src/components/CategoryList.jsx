@@ -2,7 +2,7 @@
 
 import Swal from "sweetalert2";
 
-const CategoryList = ({ categories, setElementEdit, deleteCategory, setOpen }) => {
+const CategoryList = ({ categories, setElementEdit, deleteMethod ,setCategories, setOpen }) => {
   return (
     <ul className="list">
       {categories.map(category => (
@@ -29,7 +29,7 @@ const CategoryList = ({ categories, setElementEdit, deleteCategory, setOpen }) =
                     text: "Your file has been deleted.",
                     icon: "success"
                   });
-                  deleteCategory(category.id);
+                  deleteMethod(category.id, categories, 'categories', setCategories);
                 }
               })
             }}>Delete</button>

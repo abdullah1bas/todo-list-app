@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import Swal from 'sweetalert2';
 
-const CategoryForm = ({ addCategory , open, setOpen , editCategory ,  elementEdit}) => {
+const CategoryForm = ({ addMethod , open, setOpen , editMethod ,  elementEdit, setCategories, categories}) => {
   const [name, setName] = useState(open ? elementEdit.name : '');
 
   const handleSubmitAdd = (e) => {
@@ -24,14 +24,14 @@ const CategoryForm = ({ addCategory , open, setOpen , editCategory ,  elementEdi
           icon: "success"
         });
         const newCategory = { id: Date.now(), name };
-        addCategory(newCategory);
+        addMethod(newCategory, categories, 'categories', setCategories);
         setName('');
       }
     });
   };
   const handleSubmitEdit = (e) => {
     e.preventDefault();
-    editCategory({id: elementEdit.id, name });
+    editMethod({id: elementEdit.id, name }, categories, 'categories', setCategories);
     setOpen(false);
   };
 

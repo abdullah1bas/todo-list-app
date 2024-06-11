@@ -1,6 +1,7 @@
 import CategoryList from '../components/CategoryList.jsx';
 import CategoryForm from '../components/CategoryForm.jsx';
 import React, { useState,useEffect, useRef } from 'react';
+import { addMethod, deleteMethod, editMethod } from './methods.js';
 
 const CategoriesPage = () => {
   const [categories, setCategories] = useState([]);
@@ -15,29 +16,11 @@ const CategoriesPage = () => {
       setCategories(storedCategories);
     }}, []);
 
-  const addCategory = (category) => {
-    const newCategories = [...categories, category];
-    setCategories(newCategories);
-    localStorage.setItem('categories', JSON.stringify(newCategories));
-  };
-
-  const editCategory = (updatedCategory) => {
-    const updatedCategories = categories.map(cat => cat.id === updatedCategory.id ? updatedCategory : cat);
-    setCategories(updatedCategories);
-    localStorage.setItem('categories', JSON.stringify(updatedCategories));
-  };
-
-  const deleteCategory = (id) => {
-    const remainingCategories = categories.filter(cat => cat.id !== id);
-    setCategories(remainingCategories);
-    localStorage.setItem('categories', JSON.stringify(remainingCategories));
-  };
-
   return (
     <div>
-      {open && <CategoryForm {...{open, setOpen, editCategory, elementEdit}} />}
-      <CategoryForm addCategory={addCategory} />
-      <CategoryList {...{categories ,setElementEdit ,deleteCategory, setOpen}} />
+      {open && <CategoryForm {...{open, setOpen, editMethod, elementEdit , setCategories, categories}} />}
+      <CategoryForm {...{addMethod ,setCategories, categories}} />
+      <CategoryList {...{categories ,setElementEdit ,deleteMethod, setOpen, setCategories}} />
     </div>
   );
 };

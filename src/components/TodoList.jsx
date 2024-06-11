@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 
 /* eslint-disable react/prop-types */
-const TodoList = ({ todos ,setElementEdit, deleteTodo, setOpen }) => {
+const TodoList = ({ filteredTodos ,setElementEdit, deleteMethod, setOpen , todos, setTodos}) => {
   const [now, setNow] = useState(new Date().getTime());
   const [finishedTodos, setFinishedTodos] = useState([]);
   
@@ -18,7 +18,7 @@ const TodoList = ({ todos ,setElementEdit, deleteTodo, setOpen }) => {
       setNow(new Date().getTime());
     }, 1000);
 
-    todos.forEach(todo => {
+    filteredTodos.forEach(todo => {
       if (!finishedTodos.includes(todo.id)) {
         const remainingTime = new Date(todo.reminderDate).getTime() - now;
         if (remainingTime <= 0) {
@@ -29,11 +29,11 @@ const TodoList = ({ todos ,setElementEdit, deleteTodo, setOpen }) => {
     });
 
     return () => clearInterval(interval);
-  }, [now, todos, finishedTodos]);
+  }, [now, filteredTodos, finishedTodos]);
   
   return (
     <ul className="list">
-      {todos.map(todo => (
+      {filteredTodos.map(todo => (
         <li key={todo.id}>
           <div className="category-data">
             <h3>{todo.title}</h3>
@@ -66,7 +66,7 @@ const TodoList = ({ todos ,setElementEdit, deleteTodo, setOpen }) => {
                     text: "Your file has been deleted.",
                     icon: "success"
                   });
-                  deleteTodo(todo.id);
+                  deleteMethod(todo.id, todos , 'todos', setTodos);
                 }
               });
               }}>Delete</button>

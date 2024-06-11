@@ -3,6 +3,7 @@ import TodoList from '../components/TodoList';
 import TodoForm from '../components/TodoForm';
 import SearchBar from '../components/SearchBar';
 import FilterByCategory from '../components/FilterByCategory';
+import { addMethod, editMethod, deleteMethod } from './methods';
 
 const TodosPage = () => {
   const [todos, setTodos] = useState([]);
@@ -19,37 +20,19 @@ const TodosPage = () => {
       setTodos(storedTodos);
     }}, []);
 
-  const addTodo = ((todo) => {
-    const newTodos = [...todos, todo];
-    setTodos(newTodos);
-    localStorage.setItem('todos', JSON.stringify(newTodos));
-  });
-
-  const editTodo = ((updatedTodo) => {
-    const updatedTodos = todos.map(todo => todo.id === updatedTodo.id ? updatedTodo : todo);
-    setTodos(updatedTodos);
-    localStorage.setItem('todos', JSON.stringify(updatedTodos));
-  });
-
-  const deleteTodo = ((id) => {
-    const remainingTodos = todos.filter(todo => todo.id !== id);
-    setTodos(remainingTodos);
-    localStorage.setItem('todos', JSON.stringify(remainingTodos));
-  });
-
   const filteredTodos = todos
     .filter(todo => todo.title.includes(searchTerm) || todo.description.includes(searchTerm) || todo.category.includes(searchTerm))
     .filter(todo => !selectedCategory || todo.category === selectedCategory);
 
   return (
     <div className="container">
-      {open && <TodoForm {...{open, elementEdit, setOpen, editTodo}} />}
+      {open && <TodoForm {...{open, elementEdit, setOpen, editMethod, todos, setTodos}} />}
       <h2>To-dos</h2>
       <SearchBar {...{setSearchTerm}} />
       <FilterByCategory {...{setSelectedCategory}} />
-      <TodoForm {...{addTodo}} />
+      <TodoForm {...{addMethod, todos, setTodos}} />
 
-      {filteredTodos.length ? <TodoList todos={filteredTodos} {...{editTodo, deleteTodo, setOpen, setElementEdit}} /> : null}
+      {filteredTodos.length ? <TodoList {...{filteredTodos, deleteMethod, setOpen, setElementEdit, todos, setTodos}} /> : null}
     </div>
   );
 };

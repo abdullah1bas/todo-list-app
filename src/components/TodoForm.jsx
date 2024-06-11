@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Swal from 'sweetalert2';
 
-const TodoForm = ({ addTodo , open , elementEdit , setOpen, editTodo}) => {
+const TodoForm = ({ addMethod , open , elementEdit , setOpen, editMethod,  todos, setTodos}) => {
   const [title, setTitle] = useState(open ? elementEdit.title : '');
   const [description, setDescription] = useState(open ? elementEdit.description : '');
   const [category, setCategory] = useState(open ? elementEdit.category : '');
@@ -32,7 +32,7 @@ const TodoForm = ({ addTodo , open , elementEdit , setOpen, editTodo}) => {
           icon: "success"
         });
         const newTodo = { id: Date.now(), title, description, category, reminderDate };
-        addTodo(newTodo);
+        addMethod(newTodo, todos, 'todos' , setTodos);
         setTitle('');
         setDescription('');
         setCategory('');
@@ -43,7 +43,7 @@ const TodoForm = ({ addTodo , open , elementEdit , setOpen, editTodo}) => {
   };
   const handleSubmitEdit = (e) => {
     e.preventDefault();
-    editTodo({id: elementEdit.id, title, description, category, reminderDate });
+    editMethod({id: elementEdit.id, title, description, category, reminderDate }, todos, 'todos' , setTodos);
     setOpen(false);
   };
 
